@@ -1,0 +1,27 @@
+
+#! /bin/bash
+
+# This bash script keeps the udpreceiver open until a designated file number is met
+
+# Enter a filename to start with
+# All following files will increment by 1 as a filename
+int=1
+args=("$@")
+file=$@$int
+
+# Enter max number of files to receive here + 1
+until [ $int -eq 4 ];  # This loops stops at 3 files
+do
+if [ -f $file$int ];
+then
+((int=int+1))
+echo "filename already exists"
+echo " "
+else
+echo "Waiting for file, next filename: $@$int"
+
+echo " "
+echo `udp-receiver --f $@$int`
+((int=int+1))
+fi
+done
